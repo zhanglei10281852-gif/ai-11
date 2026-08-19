@@ -60,14 +60,4 @@ func (s Workspace) ExecutionWithinLimit(startAt, finishAt time.Time) bool {
 	return finishAt.After(startAt) && finishAt.Sub(startAt) <= s.MaxExecution
 }
 
-func (s Workspace) BusinessDayWindow(at time.Time) (time.Time, time.Time, error) {
-	loc, err := time.LoadLocation(s.BusinessTimezone)
-	if err != nil {
-		return time.Time{}, time.Time{}, err
-	}
-	local := at.In(loc)
-	start := time.Date(local.Year(), local.Month(), local.Day(), 0, 0, 0, 0, loc)
-	return start.UTC(), start.AddDate(0, 0, 1).UTC(), nil
-}
-
 func (s Workspace) IsClosed() bool { return s.Status == WorkspaceArchived }
